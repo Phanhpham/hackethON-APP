@@ -1,0 +1,124 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+struct Todo{
+    int id;
+    char startDate[50];
+    char endDate[50];
+    char content[100];
+    bool status;
+};
+
+struct Todo todoList[2] = {
+    {1, "2023-01-01", "2023-01-10", "Todo 1", false},
+    {2, "2023-02-01", "2023-02-15", "Todo 2", true}
+};
+
+void printTodoList(){
+    printf("Danh sach Todo:\n");
+    for(int i = 0; i < sizeof(todoList) / sizeof(todoList[0]); i++){
+        printf("ID: %d, Start Date: %s, End Date: %s, Content: %s, Status: %s\n",todoList[i].id, todoList[i].startDate, todoList[i].endDate,todoList[i].content, todoList[i].status ? "Hoan thanh" : "Chua hoan thanh");
+    }
+}
+
+void addTodo(){
+    struct Todo newTodo;
+    printf("Nhap Start Date: ");
+    scanf("%s", newTodo.startDate);
+    printf("Nhap End Date: ");
+    scanf("%s", newTodo.endDate);
+    printf("Nhap Content: ");
+    scanf("%s", newTodo.content);
+    newTodo.status = false;
+    todoList[sizeof(todoList) / sizeof(todoList[0])] = newTodo;
+}
+void updateTodo(){
+    char searchContent[100];
+    printf("Nhap noi dung Todo muon cap nhat: ");
+    scanf("%s", searchContent);
+    int foundIndex = -1;
+    for(int i = 0; i < sizeof(todoList) / sizeof(todoList[0]); i++){
+        if (strcmp(todoList[i].content, searchContent) == 0){
+            foundIndex = i;
+            break;
+        }
+    }
+    if(foundIndex != -1){
+        printf("Nhap Start Date moi: ");
+        scanf("%s", todoList[foundIndex].startDate);
+        printf("Nhap End Date moi: ");
+        scanf("%s", todoList[foundIndex].endDate);
+        printf("Nhap Content moi: ");
+        scanf("%s", todoList[foundIndex].content);
+    } else {
+        printf("Khong tim thay Todo can cap nhat.\n");
+    }
+}
+void deleteTodo(){
+    char searchContent[100];
+    printf("Nhap noi dung Todo muon xoa: ");
+    scanf("%s", searchContent);
+    int foundIndex = -1;
+    for(int i = 0; i < sizeof(todoList) / sizeof(todoList[0]); i++){
+        if(strcmp(todoList[i].content, searchContent) == 0){
+            foundIndex = i;
+            break;
+        }
+    }
+    if(foundIndex != -1){
+        for(int i = foundIndex; i < sizeof(todoList) / sizeof(todoList[0]) - 1; i++){
+            todoList[i] = todoList[i + 1];
+        }
+    } else{
+        printf("Khong tim thay Todo can xoa.\n");
+    }
+}
+
+
+int main(){
+    int choice;
+    do {
+        printf("************************MENU**************************\n");
+        printf("1. In toan bo danh sach Todo\n");
+        printf("2. Them moi Todo\n");
+        printf("3. Cap nhat thong tin Todo\n");
+        printf("4. Xoa mot Todo\n");
+        printf("5. Sap xep danh sach Todo\n");
+        printf("6. Tim kiem Todo\n");
+        printf("7. Tim kiem theo trang thai\n");
+        printf("0. Thoat\n");
+        printf("Nhap lua chon cua ban: ");
+        scanf("%d", &choice);
+        switch (choice){
+            case 1:
+                printTodoList();
+                break;
+            case 2:
+                addTodo();
+                break;
+            case 3:
+                updateTodo();
+                break;
+            case 4:
+                deleteTodo();
+                break;
+            case 5:
+                
+                printTodoList();
+                break;
+            case 6:
+                
+                break;
+            case 7:
+                
+                break;
+            case 0:
+                printf("Thoat .\n");
+                break;
+            default:
+                printf("Lua chon khong hop le. Vui long nhap lai.\n");
+        }
+    } while (choice != 0);
+    return 0;
+}
